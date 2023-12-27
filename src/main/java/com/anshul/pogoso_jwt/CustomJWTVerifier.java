@@ -1,13 +1,15 @@
 package com.anshul.pogoso_jwt;
 
 import io.jsonwebtoken.*;
-
 import java.util.Date;
 
 public class CustomJWTVerifier {
     private final String secretKey;
 
     public CustomJWTVerifier(String secretKey) {
+        if (secretKey == null || secretKey.isEmpty()) {
+            throw new IllegalArgumentException("Secret key cannot be Null or Empty");
+        }
         this.secretKey = secretKey;
     }
 
@@ -18,18 +20,33 @@ public class CustomJWTVerifier {
                     .parseClaimsJws(jwt)
                     .getBody();
 
-            // Check custom claim
-            if (!"KNIT".equals(claims.get("university", String.class))) {
+            // To check the custom claim
+            if (!"KNIT".equals(claims.get("University", String.class))) {
                 return false;
             }
 
-            // Check expiration
+            // To check the expiration
             Date now = new Date();
             return !claims.getExpiration().before(now);
 
         } catch (JwtException e) {
-            // Invalid signature or other exceptions
+            // Return false in case of Invalid signature
             return false;
+        }
+    }
+    public Date getExpirationTime(String jwt) {
+        try {
+            Jws<Claims> claimsJws = Jwts.parserBuilder()
+                    .setSigningKey(secretKey)
+                    .build()
+                    .parseClaimsJws(jwt);
+
+            Claims body = claimsJws.getBody();
+
+            return body.getExpiration();
+        } catch (JwtException | IllegalArgumentException e) {
+            // Return in case of Invalid token
+            return null;
         }
     }
 }
