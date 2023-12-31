@@ -1,10 +1,6 @@
 package com.anshul.pogoso_jwt;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-
 import java.util.Date;
-
 public class JWTTest {
 
     public static void main(String[] args) {
@@ -12,10 +8,9 @@ public class JWTTest {
         // Assumed secret key
         String secretKey = "8fe0ba0281a9a66f2344f6d3cba9332dbf69df32209759b6a06a8dc195b6622c";
 
-
         CustomJWTGenerator jwtGenerator = new CustomJWTGenerator(secretKey);
 
-        // Create a JWT with a sample payload
+        // Created a JWT with a sample payload
         String generatedJWT = jwtGenerator.generateJWT("SamplePayload");
         // To print the generated JWT
         System.out.println("Generated JWT: " + generatedJWT);
@@ -30,6 +25,7 @@ public class JWTTest {
         } else {
             System.out.println("JWT is not valid.");
         }
+
 
         // To refresh the token
         Date expiration = jwtVerifier.getExpirationTime(generatedJWT);

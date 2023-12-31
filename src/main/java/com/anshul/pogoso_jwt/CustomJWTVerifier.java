@@ -6,6 +6,7 @@ import java.util.Date;
 public class CustomJWTVerifier {
     private final String secretKey;
 
+    //Constructor
     public CustomJWTVerifier(String secretKey) {
         if (secretKey == null || secretKey.isEmpty()) {
             throw new IllegalArgumentException("Secret key cannot be Null or Empty");
@@ -13,6 +14,7 @@ public class CustomJWTVerifier {
         this.secretKey = secretKey;
     }
 
+    //Function to verify JWT Integrity
     public boolean verifyJWT(String jwt) {
         try {
             Claims claims = Jwts.parser()
@@ -34,8 +36,10 @@ public class CustomJWTVerifier {
             return false;
         }
     }
+
     public Date getExpirationTime(String jwt) {
-        try {
+        try
+        {
             Jws<Claims> claimsJws = Jwts.parserBuilder()
                     .setSigningKey(secretKey)
                     .build()

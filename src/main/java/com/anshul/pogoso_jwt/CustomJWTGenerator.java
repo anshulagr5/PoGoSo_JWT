@@ -18,7 +18,7 @@ public class CustomJWTGenerator {
 
     public String generateJWT(String payload) {
         Date now = new Date();
-        Date expiration = new Date(now.getTime() + 60 * 1000); // 1 hour expiration
+        Date expiration = new Date(now.getTime() + 3600 * 1000); // 1 hour expiration
 
         JwtBuilder jwtBuilder = Jwts.builder()
                 .setIssuedAt(now)
@@ -29,6 +29,9 @@ public class CustomJWTGenerator {
 
         return jwtBuilder.compact();
     }
+
+
+    //Function to refresh the JWT when expired
     public String refreshJWT(String oldJwt) {
         try {
             Jws<Claims> claimsJws = Jwts.parserBuilder()
@@ -59,10 +62,10 @@ public class CustomJWTGenerator {
             throw new IllegalArgumentException("Invalid token for refresh");
         }
     }
+
+    //Function to check whether the token is expired or not
     private boolean isTokenExpired(Date expiration) {
         Date now = new Date();
         return expiration.before(now);
     }
 }
-
-
